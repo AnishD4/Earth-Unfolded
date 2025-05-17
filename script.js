@@ -2,7 +2,9 @@ let isDragging = false;
 let previousMousePosition = { x: 0, y: 0 };
 let velocity = { x: 0, y: 0 };
 let inertia = { x: 0, y: 0 };
-const friction = 0.95; // Lower = longer spin
+const friction = 0.95;
+const minVelocity = 0.008; // Minimum movement
+// Lower = longer spin
 
 window.onload = function() {
     const scene = new THREE.Scene();
@@ -56,14 +58,18 @@ window.onload = function() {
     function animate() {
         requestAnimationFrame(animate);
         if (!isDragging) {
-            // Apply inertia
             earth.rotation.y += inertia.x;
             earth.rotation.x += inertia.y;
             inertia.x *= friction;
             inertia.y *= friction;
-            // Stop when very slow
-            if (Math.abs(inertia.x) < 0.0001) inertia.x = 0;
-            if (Math.abs(inertia.y) < 0.0001) inertia.y = 0;
+
+            // Enforce minimum movement
+            if (Math.abs(inertia.x) < minVelocity && inertia.x !== 0) {
+                inertia.x = minVelocity * Math.sign(inertia.x);
+            }
+            if (Math.abs(inertia.y) < minVelocity && inertia.y !== 0) {
+                inertia.y = minVelocity * Math.sign(inertia.y);
+            }
         }
         renderer.render(scene, camera);
     }
