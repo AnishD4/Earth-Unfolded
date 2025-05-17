@@ -7,6 +7,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import TimelineControl from '@/components/TimelineControl';
 import InfoPanel from '@/components/InfoPanel';
 import Stars from '@/components/Stars';
+import Link from 'next/link';
 
 // Dynamically import Earth component to avoid SSR issues with Three.js
 const Earth = dynamic(() => import('@/components/Earth'), { ssr: false });
@@ -226,6 +227,32 @@ export default function Home() {
                 Take Action
               </motion.button>
 
+              <Link href="/impact">
+                <motion.div
+                  className="bg-blue-600/70 hover:bg-blue-700 text-white p-2 rounded-lg backdrop-blur-sm flex items-center gap-2 px-4 text-sm cursor-pointer"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 1.8 }}
+                >
+                  Impact
+                </motion.div>
+              </Link>
+
+              <Link href="/whats-next">
+                <motion.div
+                  className="bg-blue-600/70 hover:bg-blue-700 text-white p-2 rounded-lg backdrop-blur-sm flex items-center gap-2 px-4 text-sm cursor-pointer"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 1.8 }}
+                >
+                  What's Next
+                </motion.div>
+              </Link>
+
               {/* Info button removed as requested */}
             </div>
           </div>
@@ -244,7 +271,6 @@ export default function Home() {
           >
             <p className="text-white font-medium">Drag to rotate • Scroll to zoom</p>
             <p className="text-blue-300 mt-2 text-sm">Use the timeline to explore different eras</p>
-            <p className="text-gray-400 text-xs mt-3">This message will disappear shortly</p>
           </motion.div>
         )}
       </AnimatePresence>

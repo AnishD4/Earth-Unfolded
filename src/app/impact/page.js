@@ -1,58 +1,225 @@
 "use client";
 
-import { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { useState, useEffect, useRef } from 'react';
+import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
 import Link from 'next/link';
+import Image from 'next/image';
 
 export default function ImpactPage() {
   const [selectedImpact, setSelectedImpact] = useState(null);
   const [isLoaded, setIsLoaded] = useState(false);
+  const [activeTab, setActiveTab] = useState('overview');
+  const [personalImpact, setPersonalImpact] = useState(null);
+  const [showPersonalImpactResults, setShowPersonalImpactResults] = useState(false);
+  const heroRef = useRef(null);
+  const { scrollYProgress } = useScroll({
+    target: heroRef,
+    offset: ["start start", "end start"]
+  });
+  const opacity = useTransform(scrollYProgress, [0, 1], [1, 0]);
+  const scale = useTransform(scrollYProgress, [0, 1], [1, 0.8]);
 
-  // Data for the different climate impacts
+  // Data for the different climate impacts with expanded information
   const impacts = [
     {
       id: 'rising-temps',
       title: 'Rising Temperatures',
-      description: 'Global average temperatures have risen by over 1°C since pre-industrial times and are projected to continue rising, leading to more extreme heat events, affecting ecosystems and human health worldwide.',
+      description: 'Global average temperatures have risen by over °C since pre-industrial times and are projected to continue rising, leading to more extreme heat events, affecting ecosystems and human health worldwide.',
+      longDescription: 'The Earth\'s average temperature has increased by about 1.1°C since the pre-industrial era, with each of the last four decades being successively warmer than any decade that preceded it. This warming is primarily driven by greenhouse gas emissions from human activities. Rising temperatures are causing more frequent and intense heat waves, which have deadly consequences for people and wildlife. Heat-related deaths, particularly among vulnerable populations, are increasing. Agriculture is being disrupted as growing seasons change and extreme heat damages crops. Urban heat islands in cities amplify these effects, sometimes creating temperature differences of up to 7°C compared to surrounding areas.',
       icon: '🌡️',
       color: 'from-orange-400 to-red-600',
       stats: [
         { label: 'Temperature Increase Since 1880', value: '+1.1°C' },
-        { label: 'Projected Increase by 2100', value: '+1.5 to +5.0°C' }
-      ]
+        { label: 'Projected Increase by 2100', value: '+1.5 to +5.0°C' },
+        { label: 'Annual Heat-Related Deaths', value: '166,000+' },
+        { label: 'Economic Cost', value: '$2.4 trillion annually by 2030' }
+      ],
+      solutions: [
+        {
+          title: 'Rapid Transition to Renewable Energy',
+          description: 'Shifting from fossil fuels to solar, wind, and other renewable sources could reduce emissions by 70-85% by 2050.',
+          icon: '☀️'
+        },
+        {
+          title: 'Energy Efficiency',
+          description: 'Improving building insulation and appliance efficiency could reduce energy demand by 30%.',
+          icon: '💡'
+        },
+        {
+          title: 'Urban Green Spaces',
+          description: 'Expanding parks and green roofs in cities can reduce urban heat island effects by 2-8°C.',
+          icon: '🌳'
+        }
+      ],
+      personalActions: [
+        'Use energy-efficient appliances and lighting',
+        'Install home insulation to reduce heating/cooling needs',
+        'Choose renewable energy providers when possible',
+        'Reduce meat consumption, especially beef',
+        'Use public transportation, carpooling, or electric vehicles'
+      ],
+      impactVisual: '/rising-temp-graph.png',
+      bgImage: 'https://images.unsplash.com/photo-1583795223154-92e282f3c80c?q=80&w=1470&auto=format'
     },
     {
       id: 'sea-level',
       title: 'Sea Level Rise',
       description: 'Rising sea levels threaten coastal communities, infrastructure, and ecosystems. Thermal expansion of oceans and melting ice from glaciers and ice sheets contribute to ongoing sea level rise.',
+      longDescription: 'Global sea levels have risen about 20 centimeters (8 inches) since 1900, with the rate of rise accelerating in recent decades. This is happening due to two main factors: thermal expansion (as ocean water warms, it expands) and the melting of land ice (glaciers and ice sheets). The Greenland and Antarctic ice sheets are now losing mass at an accelerating rate. Rising seas are already causing more frequent and severe coastal flooding, even on sunny days. By 2050, areas currently home to 300 million people will face annual coastal flooding. Small island nations and low-lying coastal areas are particularly vulnerable, with some facing existential threats. Critical infrastructure like ports, airports, and power plants are at risk, along with freshwater supplies that can be contaminated by saltwater intrusion.',
       icon: '🌊',
       color: 'from-blue-400 to-blue-700',
       stats: [
         { label: 'Rise Since 1900', value: '~20 cm' },
-        { label: 'Projected Rise by 2100', value: '30-110 cm' }
-      ]
+        { label: 'Projected Rise by 2100', value: '30-110 cm' },
+        { label: 'People at Risk by 2050', value: '300 million' },
+        { label: 'Annual Cost of Coastal Flooding', value: '$1 trillion by 2050' }
+      ],
+      solutions: [
+        {
+          title: 'Coastal Protection Infrastructure',
+          description: 'Sea walls, surge barriers, and nature-based solutions like restored wetlands can protect vulnerable areas.',
+          icon: '🏗️'
+        },
+        {
+          title: 'Managed Retreat',
+          description: 'Planned relocation of communities from high-risk areas to safer ground, with policy support.',
+          icon: '🏠'
+        },
+        {
+          title: 'Carbon Reduction',
+          description: 'Limiting warming to 1.5°C could reduce sea level rise by 50% compared to higher warming scenarios.',
+          icon: '♻️'
+        }
+      ],
+      personalActions: [
+        'Support coastal conservation efforts',
+        'Reduce carbon footprint to slow ice melt',
+        'Consider climate risks when purchasing coastal property',
+        'Advocate for climate-smart coastal development',
+        'Support climate refugees and migration policies'
+      ],
+      impactVisual: '/sea-level-rise.png',
+      bgImage: 'https://images.unsplash.com/photo-1527525443983-6e60c75fff46?q=80&w=1470&auto=format'
     },
     {
       id: 'extreme-weather',
       title: 'Extreme Weather',
       description: 'Climate change intensifies extreme weather events including hurricanes, droughts, floods, and wildfires, disrupting communities and ecosystems worldwide.',
+      longDescription: 'Climate change is making extreme weather events more frequent and intense. Warmer air can hold more moisture, leading to heavier rainfall and more severe flooding in some regions. At the same time, higher temperatures increase evaporation, worsening droughts in other areas. Hurricane intensity has increased globally, with a higher proportion of Category 4 and 5 storms. Warmer, drier conditions in many regions have extended wildfire seasons and increased the area burned. These disasters cause immediate loss of life and property, but also long-term effects like population displacement, mental health impacts, and economic disruption. Vulnerable communities with fewer resources to prepare for and recover from disasters are disproportionately affected. Infrastructure designed for historical climate conditions is increasingly inadequate for these new extremes.',
       icon: '⛈️',
       color: 'from-purple-500 to-indigo-700',
       stats: [
         { label: 'Increase in Category 4-5 Hurricanes', value: '+30% since 1980' },
-        { label: 'Annual Cost of Weather Disasters', value: '$150+ billion' }
-      ]
+        { label: 'Annual Cost of Weather Disasters', value: '$150+ billion' },
+        { label: 'Increase in Western US Wildfires', value: '+400% since 1980s' },
+        { label: 'People Displaced by Weather Disasters (2008-2018)', value: '200+ million' }
+      ],
+      solutions: [
+        {
+          title: 'Early Warning Systems',
+          description: 'Advanced forecasting and alert systems can reduce disaster-related deaths by up to 30%.',
+          icon: '📱'
+        },
+        {
+          title: 'Climate-Resilient Infrastructure',
+          description: 'Buildings, roads, and utilities designed to withstand extreme conditions can reduce damage by 50%.',
+          icon: '🏢'
+        },
+        {
+          title: 'Nature-Based Solutions',
+          description: 'Restored wetlands, forests, and mangroves provide natural protection against floods and storms.',
+          icon: '🌿'
+        }
+      ],
+      personalActions: [
+        'Create a household emergency plan and kit',
+        'Install flood and storm protection for your home',
+        'Support disaster relief organizations',
+        'Advocate for climate-resilient community planning',
+        'Consider climate risks when choosing where to live'
+      ],
+      impactVisual: '/extreme-weather-trends.png',
+      bgImage: 'https://images.unsplash.com/photo-1429552077091-836152271555?q=80&w=1472&auto=format'
     },
     {
       id: 'biodiversity',
       title: 'Biodiversity Loss',
       description: 'Changing climate conditions are forcing species to adapt or migrate, with many facing extinction. Ecosystems are being disrupted with cascading effects throughout food webs.',
+      longDescription: 'Climate change is a major driver of biodiversity loss, with ecosystems changing faster than many species can adapt. Rising temperatures are shifting habitat ranges poleward and to higher elevations, but many species cannot migrate quickly enough. Changing seasonal patterns disrupt critical life cycle events like flowering, migration, and reproduction. Ocean acidification—caused by oceans absorbing excess CO₂—is threatening marine life, especially coral reefs and shellfish. The IPBES estimates that up to one million plant and animal species are now at risk of extinction. This loss affects ecosystem services that humans depend on, including pollination of crops, clean water, and carbon sequestration. Indigenous communities and others who rely directly on natural resources for their livelihoods are particularly affected. The interconnected nature of ecosystems means that the loss of one species can have ripple effects throughout the food web.',
       icon: '🦋',
       color: 'from-green-400 to-emerald-600',
       stats: [
         { label: 'Species at Risk of Extinction', value: '1 million+' },
-        { label: 'Rate of Extinction', value: '1000x background rate' }
-      ]
+        { label: 'Rate of Extinction', value: '1000x background rate' },
+        { label: 'Global Forest Loss Since 1990', value: '420 million hectares' },
+        { label: 'Coral Reefs at Risk by 2050', value: '90%' }
+      ],
+      solutions: [
+        {
+          title: 'Protected Areas',
+          description: 'Expanding marine and terrestrial protected areas to 30% of Earth\'s surface could preserve critical habitats.',
+          icon: '🌍'
+        },
+        {
+          title: 'Wildlife Corridors',
+          description: 'Connected habitats allow species to migrate as climate zones shift.',
+          icon: '🦌'
+        },
+        {
+          title: 'Sustainable Agriculture',
+          description: 'Regenerative farming practices can reduce habitat destruction while sequestering carbon.',
+          icon: '🌱'
+        }
+      ],
+      personalActions: [
+        'Plant native species in your garden',
+        'Choose sustainable seafood and forest products',
+        'Support conservation organizations',
+        'Reduce plastic pollution that harms wildlife',
+        'Avoid products containing palm oil from deforested areas'
+      ],
+      impactVisual: '/biodiversity-decline.png',
+      bgImage: 'https://images.unsplash.com/photo-1531591116320-72c171689a98?q=80&w=1470&auto=format'
+    }
+  ];
+
+  // Personal impact calculator questions
+  const impactQuestions = [
+    {
+      id: 'transportation',
+      question: 'What is your primary mode of transportation?',
+      options: [
+        { label: 'Walk or bicycle', value: 0 },
+        { label: 'Public transportation', value: 3 },
+        { label: 'Electric/hybrid vehicle', value: 5 },
+        { label: 'Gasoline vehicle (shared/carpool)', value: 7 },
+        { label: 'Gasoline vehicle (solo driver)', value: 10 }
+      ],
+      selected: null
+    },
+    {
+      id: 'diet',
+      question: 'How would you describe your diet?',
+      options: [
+        { label: 'Plant-based/vegan', value: 0 },
+        { label: 'Vegetarian', value: 3 },
+        { label: 'Pescatarian (vegetarian + seafood)', value: 5 },
+        { label: 'Omnivore (moderate meat)', value: 7 },
+        { label: 'Meat with most meals', value: 10 }
+      ],
+      selected: null
+    },
+    {
+      id: 'energy',
+      question: 'What is your home energy situation?',
+      options: [
+        { label: '100% renewable energy', value: 0 },
+        { label: 'Partially renewable with efficiency measures', value: 3 },
+        { label: 'Standard utilities with some efficiency measures', value: 6 },
+        { label: 'Standard utilities with minimal efficiency', value: 8 },
+        { label: 'High energy use with no efficiency measures', value: 10 }
+      ],
+      selected: null
     }
   ];
 
@@ -112,8 +279,8 @@ export default function ImpactPage() {
 
             {/* Navigation button */}
             <Link href="/" passHref>
-              <motion.button
-                className="bg-blue-600/70 hover:bg-blue-700 text-white p-2 rounded-lg backdrop-blur-sm flex items-center gap-2 px-4 text-sm mt-4 md:mt-0"
+              <motion.div
+                className="bg-blue-600/70 hover:bg-blue-700 text-white p-2 rounded-lg backdrop-blur-sm flex items-center gap-2 px-4 text-sm mt-4 md:mt-0 cursor-pointer"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 initial={{ opacity: 0 }}
@@ -124,7 +291,7 @@ export default function ImpactPage() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
                 </svg>
                 Return to Earth View
-              </motion.button>
+              </motion.div>
             </Link>
           </div>
         </div>
