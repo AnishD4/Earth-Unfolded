@@ -41,36 +41,36 @@ export default function Earth({ timeframe, onHotspotClick }) {
   }, [timeframe]);
 
   return (
-    <>
-      <OrbitControls
-        ref={controlsRef}
-        enableZoom={true}
-        enablePan={false}
-        minDistance={2.5}
-        maxDistance={8}
-        rotateSpeed={0.5}
-      />
-
-      <primitive
-        ref={earthRef}
-        object={gltf.scene}
-        scale={1}
-        position={[0, 0, 0]}
-        onClick={onHotspotClick}
-      />
-
-      <Environment preset="city" />
-
-      {/* Add atmospheric effect */}
-      <mesh scale={1.02}>
-        <sphereGeometry args={[1, 32, 32]} />
-        <meshPhongMaterial
-          color="#3482F6"
-          opacity={0.15}
-          transparent={true}
-          side={THREE.BackSide}
+      <>
+        <OrbitControls
+            ref={controlsRef}
+            enableZoom={true}
+            enablePan={false}
+            minDistance={2.5}
+            maxDistance={8}
+            rotateSpeed={0.5}
         />
-      </mesh>
-    </>
+
+        <primitive
+            ref={earthRef}
+            object={gltf.scene}
+            scale={1}
+            position={[0, 0, 0]}
+            onClick={onHotspotClick}
+        />
+
+        <Environment preset="city" />
+
+        {/* Add atmospheric effect */}
+        <mesh scale={1.02}>
+          <sphereGeometry args={[1, 32, 32]} />
+          <meshPhongMaterial
+              color="#3482F6"
+              opacity={0.15}
+              transparent={true}
+              side={THREE.BackSide}
+          />
+        </mesh>
+      </>
   );
 }
