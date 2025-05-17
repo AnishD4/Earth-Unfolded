@@ -130,7 +130,7 @@ export default function Home() {
               transition={{ delay: 1 }}
               className="text-blue-300 text-xl mt-4 max-w-md text-center"
             >
-              Visualizing our planet's climate through time
+              Visualizing our planet&#39;s climate through time
             </motion.p>
 
             {/* Custom loading animation instead of react-loader-spinner */}
