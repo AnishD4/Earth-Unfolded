@@ -1,0 +1,26 @@
+
+body {
+    background: linear-gradient(135deg, #e0e4cc 0%, #a8d5ba 100%);
+    min-height: 100vh;
+}
+.earth-card {
+    background: #f5f3e7;
+    border-left: 8px solid #6b8e23;
+    border-radius: 1rem;
+    box-shadow: 0 2px 8px rgba(34, 49, 63, 0.08);
+    margin-bottom: 2rem;
+}
+.earth-header {
+    color: #386641;
+    font-weight: bold;
+}
+footer {
+    background: #386641;
+    color: #fff;
+    padding: 1rem 0;
+    text-align: center;
+}
+.earth-footer {
+    font-size: 0.9rem;
+    color: #fff;
+}
