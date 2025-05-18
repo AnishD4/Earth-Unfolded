@@ -209,7 +209,8 @@ export default function TimelineControl({ onTimeframeChange }) {
                         : 'text-gray-400 group-hover:text-gray-200'
                     }`}
                   >
-                    {timeframe.name.split(' ')[0]}
+                    {/*{timeframe.name.split(' ')[0]}*/}
+                    {timeframe.name}
                   </span>
                 </motion.button>
               </div>
