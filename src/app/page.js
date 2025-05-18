@@ -5,7 +5,6 @@ import React, { useState, useEffect, Suspense } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { motion, AnimatePresence } from 'framer-motion';
 import TimelineControl from '@/components/TimelineControl';
-import InfoPanel from '@/components/InfoPanel';
 import Stars from '@/components/Stars';
 import Link from 'next/link';
 
@@ -90,7 +89,7 @@ export default function Home() {
     // Hide intro after delay
     const timer = setTimeout(() => {
       setShowIntro(false);
-    }, 3500);
+    }, 3000);
 
     // Set default timeframe after initial load
     setActiveTimeframe({
@@ -102,6 +101,28 @@ export default function Home() {
     });
 
     return () => clearTimeout(timer);
+  }, []);
+
+  useEffect(() => {
+    const handleResize = () => {
+      // Check if screen width is that of a typical laptop (under 1366px)
+      if (window.innerWidth < 1366 && window.innerWidth >= 768) {
+        // Apply zoom to the root element
+        document.documentElement.style.zoom = "90%";
+      } else {
+        // Reset zoom for larger screens
+        document.documentElement.style.zoom = "100%";
+      }
+    };
+
+    // Set initial zoom
+    handleResize();
+
+    // Update on resize
+    window.addEventListener('resize', handleResize);
+
+    // Cleanup
+    return () => window.removeEventListener('resize', handleResize);
   }, []);
 
   // Show help temporarily and fade it out
@@ -137,6 +158,7 @@ export default function Home() {
 
   return (
     <div className="relative w-full h-screen bg-black overflow-hidden">
+
       {/* Intro animation */}
       <AnimatePresence>
         {showIntro && (
@@ -234,53 +256,53 @@ export default function Home() {
           </motion.div>
         )}
       </AnimatePresence>
-      <div className="absolute left-25 top-32 z-20 flex">
-        <motion.aside 
-          initial={{ opacity: 0, x: -50 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ delay: 0.5, duration: 0.5 }}
-          className="border border-blue-900/50 bg-gradient-to-br from-black/70 to-blue-950/40 p-5 w-96 rounded-xl mt-4 backdrop-blur-md shadow-lg"
+      <div className="absolute left-10 top-32 z-20 flex">
+        <motion.aside
+            initial={{ opacity: 0, x: -50 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.5, duration: 0.5 }}
+            className="border border-blue-900/50 bg-gradient-to-br from-black/70 to-blue-950/40 p-3 w-80 rounded-xl mt-4 backdrop-blur-md shadow-lg"
         >
-          <div className="flex items-center justify-between mb-3">
-            <motion.h2 
-              className="text-white text-xl font-bold"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.7 }}
+          <div className="flex items-center justify-between mb-2">
+            <motion.h2
+                className="text-white text-lg font-bold"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.7 }}
             >
               {currentFact.year}
             </motion.h2>
-            <motion.div 
-              className="text-blue-400 text-sm bg-blue-900/30 px-3 py-1 rounded-full flex items-center justify-center"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.8 }}
+            <motion.div
+                className="text-blue-400 text-xs bg-blue-900/30 px-2 py-1 rounded-full flex items-center justify-center"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.8 }}
             >
               Climate Facts
             </motion.div>
           </div>
-          
-          <div className="h-px bg-gradient-to-r from-transparent via-blue-500/50 to-transparent my-3"></div>
-          
+
+          <div className="h-px bg-gradient-to-r from-transparent via-blue-500/50 to-transparent my-2"></div>
+
           <div className="text-blue-100">
-            <motion.ul 
-              className="space-y-3 mt-2"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.9, staggerChildren: 0.1 }}
+            <motion.ul
+                className="space-y-2 mt-1"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.9, staggerChildren: 0.1 }}
             >
               {currentFact.facts.map((fact, idx) => (
-                <motion.li 
-                  key={idx}
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.9 + idx * 0.1 }}
-                  className={`flex items-start p-3 rounded-lg transition-all duration-300 ${selectedFact === idx ? 'bg-blue-700/20 border-l-2 border-blue-400' : 'hover:bg-blue-800/20 cursor-pointer border-l-2 border-transparent'}`}
-                  onClick={() => setSelectedFact(idx)}
-                >
-                  <span className="text-blue-300 mr-3 mt-0.5 flex-shrink-0">•</span>
-                  <span>{fact}</span>
-                </motion.li>
+                  <motion.li
+                      key={idx}
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.9 + idx * 0.1 }}
+                      className={`flex items-start p-2 rounded-lg transition-all duration-300 text-sm ${selectedFact === idx ? 'bg-blue-700/20 border-l-2 border-blue-400' : 'hover:bg-blue-800/20 cursor-pointer border-l-2 border-transparent'}`}
+                      onClick={() => setSelectedFact(idx)}
+                  >
+                    <span className="text-blue-300 mr-2 mt-0.5 flex-shrink-0">•</span>
+                    <span>{fact}</span>
+                  </motion.li>
               ))}
             </motion.ul>
           </div>
@@ -320,7 +342,7 @@ export default function Home() {
       {/* 3D Canvas */}
       <Canvas
         className="w-full h-full"
-        camera={{ position: [0, 0, 4], fov: 45 }}
+        camera={{ position: [0, 0, 3], fov: 45 }}
         onCreated={handleSceneLoaded}
       >
         <Stars count={3000} />

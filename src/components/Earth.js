@@ -49,7 +49,7 @@ export default function Earth({ timeframe, onHotspotClick }) {
   const gltf = useLoader(GLTFLoader, '/models/earth.glb');
   const controlsRef = useRef();
   const [hoverHotspot, setHoverHotspot] = useState(null);
-  const { clock, camera } = useThree();
+  const { clock, camera} = useThree();
   const [cloudsTextureLoaded, setCloudsTextureLoaded] = useState(false);
 
   // Determine if we should use the 3D model or a texture sphere based on timeframe
@@ -240,9 +240,11 @@ export default function Earth({ timeframe, onHotspotClick }) {
 
   }, [timeframe]);
 
+
+
   // Set initial camera position farther away
   useEffect(() => {
-    camera.position.z = 8;
+    camera.position.z = 4;
   }, [camera]);
 
   return (
