@@ -13,10 +13,10 @@ import Link from 'next/link';
 const Earth = dynamic(() => import('@/components/Earth'), { ssr: false });
 const timelineFacts = {
   prehistoric: {
-    year: 'Prehistoric',
+    year: 'Prehistoric (4.5 billion years ago)',
     facts: [
-      'Global temperatures were much warmer than today.',
-      'CO₂ levels exceeded 1000 ppm, driving a greenhouse climate.',
+      'Global temperatures fluctuated between 4-25°C.',
+      'CO₂ levels averaged around 280 ppm during stable periods.',
       'No polar ice caps existed; sea levels were significantly higher.'
     ]
   },
@@ -30,45 +30,46 @@ const timelineFacts = {
     ]
   },
   preindustrial: {
-    year: 'Pre-Industrial (circa 1850)',
+    year: 'Pre-Industrial (circa 1750)',
     facts: [
       'Global climate was relatively stable for thousands of years.',
+      'Global average temperature was around 13.7°C.',
       'Atmospheric CO₂ was about 280 ppm.',
-      'Global average temperature was about 1.1°C lower than today.',
       'Human influence on climate was minimal before widespread fossil fuel use.'
     ]
   },
   industrial: {
-    year: 'Industrial',
+    year: 'Industrial Revolution (1850-1950)',
     facts: [
-      'CO₂ levels began rising rapidly due to fossil fuel burning.',
-      'Global average temperature increased by about 1°C since 1850.',
-      'Industrial activities led to increased greenhouse gas emissions.'
+      'Global average temperature was around 13.8°C.',
+      'CO₂ levels rose to about 310 ppm from fossil fuel burning.',
+      'Industrialization began releasing significant greenhouse gas emissions.',
+      'Early climate research started to identify human impacts on the atmosphere.'
     ]
   },
   modern: {
-    year: 'Modern (1950–2025)',
+    year: 'Modern Era (1950-2000)',
     facts: [
+      'Global average temperature rose to around 14.2°C.',
+      'CO₂ levels increased to approximately 370 ppm.',
       'Rapid increase in greenhouse gas emissions due to industrialization and population growth.',
-      'CO₂ levels rose from about 310 ppm in 1950 to over 420 ppm by 2025.',
-      'Global average temperature increased by about 0.8°C during this period.',
       'Widespread recognition of climate change and international efforts to address it began.'
     ]
   },
   present: {
-    year: 'Present',
+    year: 'Present Day (2025)',
     facts: [
+      'Global average temperature is approximately 15.0°C.',
       'Atmospheric CO₂ is above 420 ppm, the highest in at least 2 million years.',
       'Earth has warmed by about 1.1°C since pre-industrial times.',
-      '2023 was the warmest year on record globally.',
       'Extreme weather events and sea level rise are accelerating due to climate change.'
     ]
   },
   future: {
-    year: 'Future (2100)',
+    year: 'Future Projection (2100)',
     facts: [
-      'Global temperatures could rise by 2–4°C or more, depending on emissions.',
-      'CO₂ levels may exceed 600 ppm if emissions are not curbed.',
+      'Global temperatures could rise by 1.5-4.5°C above pre-industrial levels, depending on emissions.',
+      'CO₂ levels may reach 500-900 ppm if emissions are not curbed.',
       'Sea levels could rise by up to 1 meter, threatening coastal cities.',
       'Extreme weather events are projected to become even more frequent and severe.'
     ]
@@ -84,7 +85,6 @@ export default function Home() {
   const currentFact = timelineFacts[activeTimeframe?.id] || timelineFacts['present'];
 
 
-  // Start with intro animation
   // Start with intro animation
   useEffect(() => {
     // Hide intro after delay
@@ -234,17 +234,84 @@ export default function Home() {
           </motion.div>
         )}
       </AnimatePresence>
-      <div className="absolute left-25 top-32 z-20 flex ">
-        <aside className="border border-gray-800 bg-black/40 p-4 w-80 rounded-xl mt-4 backdrop-blur-sm">
-          <h2 className="text-white text-lg font-semibold mb-2 text-center">Facts</h2>
-            <div className="text-blue-200">
-              <ul className="list-disc list-inside mt-2">
-                {currentFact.facts.map((fact, idx) => (
-                    <li key={idx}>{fact}</li>
-                ))}
-              </ul>
+      <div className="absolute left-25 top-32 z-20 flex">
+        <motion.aside 
+          initial={{ opacity: 0, x: -50 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ delay: 0.5, duration: 0.5 }}
+          className="border border-blue-900/50 bg-gradient-to-br from-black/70 to-blue-950/40 p-5 w-96 rounded-xl mt-4 backdrop-blur-md shadow-lg"
+        >
+          <div className="flex items-center justify-between mb-3">
+            <motion.h2 
+              className="text-white text-xl font-bold"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.7 }}
+            >
+              {currentFact.year}
+            </motion.h2>
+            <motion.div 
+              className="text-blue-400 text-sm bg-blue-900/30 px-3 py-1 rounded-full flex items-center justify-center"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.8 }}
+            >
+              Climate Facts
+            </motion.div>
+          </div>
+          
+          <div className="h-px bg-gradient-to-r from-transparent via-blue-500/50 to-transparent my-3"></div>
+          
+          <div className="text-blue-100">
+            <motion.ul 
+              className="space-y-3 mt-2"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.9, staggerChildren: 0.1 }}
+            >
+              {currentFact.facts.map((fact, idx) => (
+                <motion.li 
+                  key={idx}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.9 + idx * 0.1 }}
+                  className={`flex items-start p-3 rounded-lg transition-all duration-300 ${selectedFact === idx ? 'bg-blue-700/20 border-l-2 border-blue-400' : 'hover:bg-blue-800/20 cursor-pointer border-l-2 border-transparent'}`}
+                  onClick={() => setSelectedFact(idx)}
+                >
+                  <span className="text-blue-300 mr-3 mt-0.5 flex-shrink-0">•</span>
+                  <span>{fact}</span>
+                </motion.li>
+              ))}
+            </motion.ul>
+          </div>
+          
+          <div className="flex justify-between mt-4 pt-3 border-t border-blue-900/30">
+            <motion.a 
+              href="https://climate.nasa.gov/" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 1.2 }}
+              className="text-blue-400 text-xs hover:text-blue-300 transition-colors flex items-center"
+            >
+              <span>Source: NASA Climate</span>
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+              </svg>
+            </motion.a>
+          
+            <div className="flex space-x-1">
+              {currentFact.facts.map((_, idx) => (
+                <button 
+                  key={idx} 
+                  className={`w-2 h-2 rounded-full ${selectedFact === idx ? 'bg-blue-400' : 'bg-blue-800'}`}
+                  onClick={() => setSelectedFact(idx)}
+                />
+              ))}
             </div>
-        </aside>
+          </div>
+        </motion.aside>
       </div>
       <div className="absolute left-0 right-0 top-32 z-20 flex justify-start">
     </div>
@@ -318,11 +385,11 @@ export default function Home() {
                   animate={{ opacity: 1 }}
                   transition={{ delay: 1.8 }}
                 >
-                  Impact
+                  Climate Impact
                 </motion.div>
               </Link>
 
-              <Link href="/whats-next">
+              <Link href="/how-can-you-help">
                 <motion.div
                   className="bg-blue-600/70 hover:bg-blue-700 text-white p-2 rounded-lg backdrop-blur-sm flex items-center gap-2 px-4 text-sm cursor-pointer"
                   whileHover={{ scale: 1.05 }}
@@ -331,7 +398,7 @@ export default function Home() {
                   animate={{ opacity: 1 }}
                   transition={{ delay: 1.8 }}
                 >
-                  What's Next
+                  How Can You Help
                 </motion.div>
               </Link>
 

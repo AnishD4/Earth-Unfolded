@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { Space_Grotesk } from 'next/font/google';
 import { motion } from 'framer-motion';
-import styles from './whats-next.module.css';
+import styles from './how-can-you-help.module.css';
 import { useEffect, useState } from 'react';
 
 const spaceGrotesk = Space_Grotesk({

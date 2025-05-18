@@ -5,12 +5,10 @@ import * as THREE from 'three';
 export default function Stars({ count = 5000 }) {
   const mesh = useRef();
 
-  // Generate random positions for stars
   const particlesPosition = useMemo(() => {
     const positions = new Float32Array(count * 3);
 
     for (let i = 0; i < count; i++) {
-      // Create a sphere of stars around the camera
       const theta = THREE.MathUtils.randFloatSpread(360);
       const phi = THREE.MathUtils.randFloatSpread(360);
       const distance = THREE.MathUtils.randFloat(30, 100);
@@ -23,7 +21,6 @@ export default function Stars({ count = 5000 }) {
     return positions;
   }, [count]);
 
-  // Generate different sizes for stars
   const particleSizes = useMemo(() => {
     const sizes = new Float32Array(count);
     for (let i = 0; i < count; i++) {
@@ -32,7 +29,6 @@ export default function Stars({ count = 5000 }) {
     return sizes;
   }, [count]);
 
-  // Add subtle animation
   useFrame((state) => {
     if (mesh.current) {
       mesh.current.rotation.x = state.clock.getElapsedTime() * 0.01;

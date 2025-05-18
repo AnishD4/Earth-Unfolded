@@ -77,8 +77,6 @@ export default function TimelineControl({ onTimeframeChange }) {
 
   const handleTimeframeSelect = (timeframe) => {
     setSelectedTimeframe(timeframe);
-
-    // Add analytics tracking if needed
     console.log(`Timeline changed to: ${timeframe.name}`);
   };
 
@@ -132,7 +130,6 @@ export default function TimelineControl({ onTimeframeChange }) {
           </div>
         </div>
 
-        {/* Navigation buttons moved above timeline for better accessibility */}
         <div className="flex justify-center mb-3">
           <motion.button
             className="bg-blue-600/80 hover:bg-blue-700 text-white rounded-l-lg px-3 py-1 text-sm flex items-center disabled:opacity-50 disabled:cursor-not-allowed"
@@ -171,11 +168,8 @@ export default function TimelineControl({ onTimeframeChange }) {
           </motion.button>
         </div>
 
-        {/* Simplified timeline control */}
         <div className="relative">
-          {/* Timeline track - clean design */}
           <div className="relative h-1 bg-gradient-to-r from-blue-900 via-blue-700 to-red-700 rounded-full w-full mb-10">
-            {/* Time period indicators - better spacing and organization */}
             {timeframes.map((timeframe, index) => (
               <div
                 key={`timeframe-${timeframe.id}`}
@@ -209,14 +203,12 @@ export default function TimelineControl({ onTimeframeChange }) {
                         : 'text-gray-400 group-hover:text-gray-200'
                     }`}
                   >
-                    {/*{timeframe.name.split(' ')[0]}*/}
                     {timeframe.name}
                   </span>
                 </motion.button>
               </div>
             ))}
 
-            {/* Progress indicator */}
             <motion.div
               className="absolute h-full bg-blue-400/30 top-0 left-0 rounded-full"
               animate={{

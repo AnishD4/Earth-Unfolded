@@ -5,11 +5,9 @@ export default function InfoPanel({ timeframe, selectedHotspot, isOpen, onClose 
   const [activeTab, setActiveTab] = useState('overview');
   const [animatingChart, setAnimatingChart] = useState(false);
 
-  // Reset tab when panel opens
   useEffect(() => {
     if (isOpen) {
       setActiveTab('overview');
-      // Trigger chart animation when panel opens
       setTimeout(() => {
         setAnimatingChart(true);
       }, 500);
@@ -18,7 +16,6 @@ export default function InfoPanel({ timeframe, selectedHotspot, isOpen, onClose 
     }
   }, [isOpen]);
 
-  // Exit early if no timeframe is selected
   if (!timeframe) return null;
 
   const impactsByTimeframe = {
@@ -99,7 +96,6 @@ export default function InfoPanel({ timeframe, selectedHotspot, isOpen, onClose 
   const impacts = impactsByTimeframe[timeframe.id] || [];
   const solutions = solutionsByTimeframe[timeframe.id] || [];
 
-  // Temperature chart data for visualization
   const tempData = [
     { era: 'Prehistoric', value: 25 },
     { era: 'Ice Age', value: 8 },
@@ -111,7 +107,6 @@ export default function InfoPanel({ timeframe, selectedHotspot, isOpen, onClose 
     { era: 'Future (High)', value: 19.5 }
   ];
 
-  // CO2 chart data for visualization
   const co2Data = [
     { era: 'Prehistoric', value: 280 },
     { era: 'Ice Age', value: 180 },
@@ -123,11 +118,9 @@ export default function InfoPanel({ timeframe, selectedHotspot, isOpen, onClose 
     { era: 'Future (High)', value: 900 }
   ];
 
-  // Find max value for scaling
   const maxTemp = Math.max(...tempData.map(d => d.value));
   const maxCO2 = Math.max(...co2Data.map(d => d.value));
 
-  // Calculate the current timeframe index
   const timeframeIndex = ['prehistoric', 'ice_age', 'preindustrial', 'industrial', 'modern', 'present', 'future'].indexOf(timeframe.id);
 
   return (
@@ -161,7 +154,6 @@ export default function InfoPanel({ timeframe, selectedHotspot, isOpen, onClose 
               <p className="text-xl text-gray-300">{timeframe.year}</p>
             </motion.div>
 
-            {/* Navigation Tabs */}
             <div className="flex border-b border-gray-700 mt-8 mb-4">
               <button
                 className={`px-4 py-2 mr-2 transition-colors ${activeTab === 'overview' ? 'text-blue-400 border-b-2 border-blue-400' : 'text-gray-400 hover:text-gray-200'}`}
@@ -183,7 +175,6 @@ export default function InfoPanel({ timeframe, selectedHotspot, isOpen, onClose 
               </button>
             </div>
 
-            {/* Overview Tab */}
             {activeTab === 'overview' && (
               <motion.div
                 initial={{ opacity: 0 }}
@@ -199,6 +190,7 @@ export default function InfoPanel({ timeframe, selectedHotspot, isOpen, onClose 
                     <p className="text-sm text-gray-400">Global Temperature</p>
                     <p className="text-2xl font-mono text-yellow-300">{timeframe.temp}</p>
                   </motion.div>
+                  
                   <motion.div
                     className="bg-gray-800/50 p-4 rounded-lg"
                     whileHover={{ scale: 1.03 }}
@@ -209,204 +201,200 @@ export default function InfoPanel({ timeframe, selectedHotspot, isOpen, onClose 
                   </motion.div>
                 </div>
 
-                <div className="mb-8">
-                  <h3 className="text-xl font-semibold mb-4 border-b border-gray-600 pb-2">Environmental Impacts</h3>
-                  <ul className="space-y-3">
-                    {impacts.map((impact, index) => (
-                      <motion.li
-                        key={index}
-                        className="flex items-start gap-2"
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: index * 0.1 }}
-                      >
-                        <span className="text-blue-400 mt-1">•</span>
-                        <span>{impact}</span>
-                      </motion.li>
-                    ))}
-                  </ul>
-                </div>
+                <h3 className="text-xl font-semibold mb-3 text-white">Climate Impacts</h3>
+                <ul className="space-y-2 mb-8">
+                  {impacts.map((impact, idx) => (
+                    <motion.li 
+                      key={idx}
+                      className="bg-gray-800/30 p-3 rounded-lg flex items-start"
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: 0.1 * idx }}
+                    >
+                      <span className="text-blue-400 mr-2 mt-1">•</span>
+                      <span>{impact}</span>
+                    </motion.li>
+                  ))}
+                </ul>
 
-                {/* Interactive Globe Image */}
-                <motion.div
-                  className="relative w-full h-48 bg-blue-900/20 rounded-lg mb-8 overflow-hidden"
-                  whileHover={{ scale: 1.02 }}
-                >
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <img
-                      src="/globe.svg"
-                      alt="Earth illustration"
-                      className="h-32 opacity-60 animate-float"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
-                  </div>
-                  <div className="absolute bottom-0 left-0 w-full p-3 text-sm">
-                    <p className="text-blue-300 font-semibold">Climate Pattern:</p>
-                    <p className="text-white/80">
-                      {timeframe.id === 'future' ? 'Unpredictable weather extremes' :
-                       timeframe.id === 'present' ? 'Increasing weather anomalies' :
-                       timeframe.id === 'modern' ? 'Warming trend established' :
-                       timeframe.id === 'industrial' ? 'Beginning of human impact' :
-                       timeframe.id === 'preindustrial' ? 'Natural climate cycles' :
-                       timeframe.id === 'ice_age' ? 'Extended cold period' :
-                       'Primordial climate formation'}
-                    </p>
-                  </div>
-                </motion.div>
+                <div className="bg-gray-800/20 p-4 rounded-lg mb-6">
+                  <h3 className="text-lg text-blue-300 mb-2">Did you know?</h3>
+                  <p className="text-gray-300">
+                    {timeframe.id === 'prehistoric' && "Earth's early atmosphere had over 100 times more CO₂ than today."}
+                    {timeframe.id === 'ice_age' && "During the last Ice Age, humans migrated across land bridges exposed by lower sea levels."}
+                    {timeframe.id === 'preindustrial' && "The pre-industrial period had relatively stable climate for thousands of years."}
+                    {timeframe.id === 'industrial' && "The first scientific paper on the greenhouse effect was published in 1896."}
+                    {timeframe.id === 'modern' && "The Earth has warmed about 0.8°C between 1950 and 2000."}
+                    {timeframe.id === 'present' && "The last decade contained the hottest years in modern record-keeping."}
+                    {timeframe.id === 'future' && "If all ice on Earth melted, sea levels would rise by approximately 70 meters (230 feet)."}
+                  </p>
+                </div>
               </motion.div>
             )}
 
-            {/* Data Tab */}
             {activeTab === 'data' && (
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.5 }}
               >
-                <h3 className="text-xl font-semibold mb-4">Temperature History</h3>
-                <div className="h-40 relative mb-8 bg-gray-800/30 rounded-lg p-4">
-                  <div className="absolute bottom-8 left-0 right-0 h-px bg-gray-600"></div>
-                  <div className="flex h-24 items-end justify-between relative">
-                    {tempData.map((item, i) => {
-                      const isCurrentEra = i === timeframeIndex ||
-                                          (timeframe.id === 'future' && i >= tempData.length - 2);
-                      return (
+                <div className="mb-8">
+                  <h3 className="text-xl font-semibold mb-4 text-white">Temperature History</h3>
+                  <div className="bg-gray-800/30 p-4 rounded-lg">
+                    <div className="h-40 w-full relative">
+                      {tempData.map((data, i) => (
                         <motion.div
-                          key={i}
-                          className="w-6 bg-gradient-to-t from-yellow-500 to-red-500 rounded-t relative group"
-                          style={{ height: '0%' }}
-                          animate={{
-                            height: animatingChart ? `${(item.value / maxTemp) * 100}%` : '0%',
-                            opacity: isCurrentEra ? 1 : 0.6
+                          key={`temp-${i}`}
+                          className={`absolute bottom-0 rounded-t-sm transition-all ${
+                            data.era.toLowerCase().includes(timeframe.id.replace('_', '')) 
+                              ? 'bg-yellow-500' 
+                              : 'bg-yellow-800/50'
+                          }`}
+                          style={{
+                            left: `${(i / (tempData.length-1)) * 100}%`,
+                            height: `${(data.value / maxTemp) * 100}%`,
+                            width: '12px',
+                            marginLeft: '-6px',
                           }}
-                          transition={{
-                            duration: 1,
-                            delay: i * 0.1,
-                            ease: "easeOut"
-                          }}
-                        >
-                          <span className="absolute -top-6 left-1/2 -translate-x-1/2 text-xs opacity-0 group-hover:opacity-100 transition-opacity">
-                            {item.value}°C
+                          initial={{ height: 0 }}
+                          animate={{ height: animatingChart ? `${(data.value / maxTemp) * 100}%` : 0 }}
+                          transition={{ delay: 0.1 * i, duration: 0.5 }}
+                        />
+                      ))}
+                      
+                      <div className="absolute bottom-0 w-full h-px bg-gray-600" />
+                      <div className="absolute left-0 h-full w-px bg-gray-600" />
+                    </div>
+                    
+                    <div className="flex justify-between mt-2 text-xs text-gray-400">
+                      {tempData.map((data, i) => (
+                        <div key={`era-${i}`} className="text-center" style={{ width: '12px' }}>
+                          <span className="rotate-45 inline-block whitespace-nowrap overflow-hidden text-ellipsis" style={{ maxWidth: '80px' }}>
+                            {data.era}
                           </span>
-                          <span className={`absolute -bottom-6 text-xs transform -rotate-45 origin-left ${isCurrentEra ? 'text-blue-300' : 'text-gray-400'}`}>
-                            {item.era.split(' ')[0]}
-                          </span>
-                        </motion.div>
-                      );
-                    })}
+                        </div>
+                      ))}
+                    </div>
                   </div>
                 </div>
 
-                <h3 className="text-xl font-semibold mb-4">CO₂ Levels (ppm)</h3>
-                <div className="h-40 relative mb-8 bg-gray-800/30 rounded-lg p-4">
-                  <div className="absolute bottom-8 left-0 right-0 h-px bg-gray-600"></div>
-                  <div className="flex h-24 items-end justify-between relative">
-                    {co2Data.map((item, i) => {
-                      const isCurrentEra = i === timeframeIndex ||
-                                          (timeframe.id === 'future' && i >= co2Data.length - 2);
-                      return (
+                <div className="mb-6">
+                  <h3 className="text-xl font-semibold mb-4 text-white">CO₂ Levels (ppm)</h3>
+                  <div className="bg-gray-800/30 p-4 rounded-lg">
+                    <div className="h-40 w-full relative">
+                      {co2Data.map((data, i) => (
                         <motion.div
-                          key={i}
-                          className="w-6 bg-gradient-to-t from-green-500 to-green-300 rounded-t relative group"
-                          style={{ height: '0%' }}
-                          animate={{
-                            height: animatingChart ? `${(item.value / maxCO2) * 100}%` : '0%',
-                            opacity: isCurrentEra ? 1 : 0.6
+                          key={`co2-${i}`}
+                          className={`absolute bottom-0 rounded-t-sm transition-all ${
+                            data.era.toLowerCase().includes(timeframe.id.replace('_', '')) 
+                              ? 'bg-green-500' 
+                              : 'bg-green-800/50'
+                          }`}
+                          style={{
+                            left: `${(i / (co2Data.length-1)) * 100}%`,
+                            height: `${(data.value / maxCO2) * 100}%`,
+                            width: '12px',
+                            marginLeft: '-6px',
                           }}
-                          transition={{
-                            duration: 1,
-                            delay: 0.5 + i * 0.1,
-                            ease: "easeOut"
-                          }}
-                        >
-                          <span className="absolute -top-6 left-1/2 -translate-x-1/2 text-xs opacity-0 group-hover:opacity-100 transition-opacity">
-                            {item.value}
+                          initial={{ height: 0 }}
+                          animate={{ height: animatingChart ? `${(data.value / maxCO2) * 100}%` : 0 }}
+                          transition={{ delay: 0.1 * i, duration: 0.5 }}
+                        />
+                      ))}
+                      
+                      <div className="absolute bottom-0 w-full h-px bg-gray-600" />
+                      <div className="absolute left-0 h-full w-px bg-gray-600" />
+                    </div>
+                    
+                    <div className="flex justify-between mt-2 text-xs text-gray-400">
+                      {co2Data.map((data, i) => (
+                        <div key={`co2-era-${i}`} className="text-center" style={{ width: '12px' }}>
+                          <span className="rotate-45 inline-block whitespace-nowrap overflow-hidden text-ellipsis" style={{ maxWidth: '80px' }}>
+                            {data.era}
                           </span>
-                          <span className={`absolute -bottom-6 text-xs transform -rotate-45 origin-left ${isCurrentEra ? 'text-blue-300' : 'text-gray-400'}`}>
-                            {item.era.split(' ')[0]}
-                          </span>
-                        </motion.div>
-                      );
-                    })}
+                        </div>
+                      ))}
+                    </div>
                   </div>
                 </div>
 
-                <div className="bg-gray-800/30 p-4 rounded-lg">
-                  <h3 className="text-lg font-semibold mb-2">Key Findings:</h3>
-                  <p className="text-sm text-gray-300">
-                    {timeframe.id === 'future' ?
-                      'Projected CO₂ levels show a dramatic increase that could lead to irreversible climate shifts if emissions continue unchecked.' :
-                     timeframe.id === 'present' ?
-                      'Current CO₂ concentration is 50% higher than pre-industrial levels, driving significant global warming.' :
-                     timeframe.id === 'modern' ?
-                      'The rate of CO₂ increase from 1950-2000 exceeded all natural variations in the previous 800,000 years.' :
-                     timeframe.id === 'industrial' ?
-                      'The beginning of fossil fuel use marked the start of anthropogenic climate change.' :
-                     timeframe.id === 'pre-industrial' ?
-                      'For thousands of years before industrialization, CO₂ levels remained relatively stable.' :
-                     timeframe.id === 'ice-age' ?
-                      'Lower CO₂ levels during ice ages correlated with global cooling and glacier expansion.' :
-                      'Early Earth\'s carbon cycle was primarily volcanic with no human influence.'}
-                  </p>
+                <div className="bg-gray-800/20 p-4 rounded-lg mb-6 text-sm text-gray-300">
+                  <p>Data sources: Ice core samples, tree rings, fossil records, and direct measurements provide our understanding of Earth's climate history.</p>
+                  <p className="mt-2">Future projections based on IPCC climate models under various emissions scenarios.</p>
                 </div>
               </motion.div>
             )}
 
-            {/* Solutions Tab */}
             {activeTab === 'solutions' && (
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.5 }}
               >
-                <h3 className="text-xl font-semibold mb-4 border-b border-gray-600 pb-2">Climate Action</h3>
-                <ul className="space-y-4 mb-8">
-                  {solutions.map((solution, index) => (
-                    <motion.li
-                      key={index}
-                      className="bg-gray-800/30 p-3 rounded-lg"
+                <h3 className="text-xl font-semibold mb-3 text-white">Climate Solutions</h3>
+                <ul className="space-y-2 mb-6">
+                  {solutions.map((solution, idx) => (
+                    <motion.li 
+                      key={idx}
+                      className="bg-gray-800/30 p-3 rounded-lg flex items-start"
                       initial={{ opacity: 0, x: -20 }}
                       animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: index * 0.1 }}
-                      whileHover={{ scale: 1.02, backgroundColor: 'rgba(59, 130, 246, 0.2)' }}
+                      transition={{ delay: 0.1 * idx }}
                     >
-                      <div className="flex gap-3 items-start">
-                        <div className="bg-blue-500/30 p-1 rounded-full mt-1">
-                          <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-blue-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                          </svg>
-                        </div>
-                        <span>{solution}</span>
-                      </div>
+                      <span className="text-green-400 mr-2 mt-1">✓</span>
+                      <span>{solution}</span>
                     </motion.li>
                   ))}
                 </ul>
 
-                {/* Call to Action */}
-                {(timeframe.id === 'present' || timeframe.id === 'future') && (
-                  <motion.div
-                    className="mt-8 p-4 bg-gradient-to-r from-blue-900/50 to-blue-700/50 rounded-lg border border-blue-500/30"
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.5 }}
-                  >
-                    <h4 className="text-lg font-bold text-blue-300 mb-2">Take Action Now</h4>
-                    <p className="text-sm text-gray-200 mb-4">
-                      The choices we make today will determine the climate future of generations to come.
-                      Every action, no matter how small, contributes to the solution.
+                {timeframe.id === 'present' && (
+                  <div className="bg-blue-900/30 p-4 rounded-lg mb-6 border-l-4 border-blue-500">
+                    <h4 className="text-lg font-medium text-blue-300 mb-2">Take Action Now</h4>
+                    <p className="text-gray-300 mb-3">
+                      The present moment is critical for climate action. Individual and collective efforts can make a significant difference.
                     </p>
-                    <motion.button
-                      className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg transition-colors font-medium"
-                      whileHover={{ scale: 1.03 }}
-                      whileTap={{ scale: 0.98 }}
-                      onClick={() => window.open('https://www.un.org/en/actnow', '_blank')}
-                    >
-                      Learn How You Can Help
-                    </motion.button>
-                  </motion.div>
+                    <button className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm flex items-center">
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                      </svg>
+                      Explore Climate Initiatives
+                    </button>
+                  </div>
+                )}
+
+                {timeframe.id === 'future' && (
+                  <div className="bg-gradient-to-r from-purple-900/30 to-blue-900/30 p-4 rounded-lg mb-6">
+                    <h4 className="text-lg font-medium text-purple-300 mb-2">The Future is Not Set</h4>
+                    <p className="text-gray-300">
+                      There are multiple possible futures depending on our actions today. The choices we make in the next decade will determine which climate future we experience.
+                    </p>
+                  </div>
+                )}
+
+                {timeframe.id !== 'future' && timeframe.id !== 'present' && (
+                  <div className="bg-gray-800/20 p-4 rounded-lg mb-6">
+                    <h4 className="text-lg font-medium text-gray-300 mb-2">Historical Context</h4>
+                    <p className="text-gray-400">
+                      Understanding past climate changes helps us better predict and prepare for future changes.
+                    </p>
+                  </div>
                 )}
               </motion.div>
             )}
+
+            <div className="mt-6 pt-6 border-t border-gray-800">
+              <a 
+                href="https://climate.nasa.gov/" 
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-sm text-blue-400 hover:text-blue-300 transition-colors inline-flex items-center"
+              >
+                <span>More data at NASA Climate</span>
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                </svg>
+              </a>
+            </div>
           </div>
         </motion.div>
       )}
