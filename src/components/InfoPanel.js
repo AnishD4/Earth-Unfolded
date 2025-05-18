@@ -128,7 +128,7 @@ export default function InfoPanel({ timeframe, selectedHotspot, isOpen, onClose 
   const maxCO2 = Math.max(...co2Data.map(d => d.value));
 
   // Calculate the current timeframe index
-  const timeframeIndex = ['prehistoric', 'ice-age', 'pre-industrial', 'industrial', 'modern', 'present', 'future'].indexOf(timeframe.id);
+  const timeframeIndex = ['prehistoric', 'ice_age', 'preindustrial', 'industrial', 'modern', 'present', 'future'].indexOf(timeframe.id);
 
   return (
     <AnimatePresence>
@@ -247,8 +247,8 @@ export default function InfoPanel({ timeframe, selectedHotspot, isOpen, onClose 
                        timeframe.id === 'present' ? 'Increasing weather anomalies' :
                        timeframe.id === 'modern' ? 'Warming trend established' :
                        timeframe.id === 'industrial' ? 'Beginning of human impact' :
-                       timeframe.id === 'pre-industrial' ? 'Natural climate cycles' :
-                       timeframe.id === 'ice-age' ? 'Extended cold period' :
+                       timeframe.id === 'preindustrial' ? 'Natural climate cycles' :
+                       timeframe.id === 'ice_age' ? 'Extended cold period' :
                        'Primordial climate formation'}
                     </p>
                   </div>

@@ -14,11 +14,11 @@ const hotspotsByTimeframe = {
     { position: [0.8, 0.5, 0.5], label: 'Volcanic Activity', color: '#FF5733' },
     { position: [-0.7, 0.1, 0.7], label: 'Early Oceans', color: '#33A1FF' }
   ],
-  'ice-age': [
+  'ice_age': [
     { position: [0, 0.8, 0.5], label: 'Glaciation', color: '#FFFFFF' },
     { position: [0.6, -0.6, 0.5], label: 'Lowered Sea Level', color: '#33A1FF' }
   ],
-  'pre-industrial': [
+  'preindustrial': [
     { position: [0.8, 0.3, 0.5], label: 'Stable Climate', color: '#33FF57' },
     { position: [-0.5, 0.5, 0.6], label: 'Pristine Forests', color: '#207040' }
   ],
@@ -52,6 +52,30 @@ export default function Earth({ timeframe, onHotspotClick }) {
   const { clock } = useThree();
   const [cloudsTextureLoaded, setCloudsTextureLoaded] = useState(false);
 
+  // Determine if we should use the 3D model or a texture sphere based on timeframe
+  const useDetailedModel = timeframe?.id === 'present';
+  
+  // Load era-specific textures
+  const eraTexture = useMemo(() => {
+    if (!timeframe || timeframe.id === 'present') return null;
+    
+    // Map timeframe ID to the corresponding texture file
+    const textureMapping = {
+      'prehistoric': '/earths/prehistoric.png',
+      'ice_age': '/earths/iceage.png',
+      'preindustrial': '/earths/preindustrial.png',
+      'industrial': '/earths/industrial.png',
+      'modern': '/earths/modern.png',
+      'future': '/earths/future.png'
+    };
+    
+    const texturePath = textureMapping[timeframe.id];
+    if (!texturePath) return null;
+    
+    const texture = new THREE.TextureLoader();
+    return texture.load(texturePath);
+  }, [timeframe]);
+
   // Load clouds texture with error handling
   const cloudsTexture = useMemo(() => {
     const texture = new THREE.TextureLoader();
@@ -77,7 +101,7 @@ export default function Earth({ timeframe, onHotspotClick }) {
     // Only auto-rotate when user isn't interacting
     if (earthRef.current && !controlsRef.current?.isDragging) {
       // Very slow rotation for subtle effect
-      earthRef.current.rotation.y += 0.003;
+      earthRef.current.rotation.y += 0.0002;
     }
 
     // Add subtle wobble to simulate Earth's actual movement
@@ -114,14 +138,14 @@ export default function Earth({ timeframe, onHotspotClick }) {
         atmosphereColor: '#FF5733',
         atmosphereOpacity: 0.2
       },
-      'ice-age': {
+      'ice_age': {
         duration: 2,
         rotationX: 0.2,
         scale: 0.95,
         atmosphereColor: '#A5F2F3',
         atmosphereOpacity: 0.15
       },
-      'pre-industrial': {
+      'preindustrial': {
         duration: 2,
         rotationX: 0.1,
         scale: 1,
@@ -236,13 +260,26 @@ export default function Earth({ timeframe, onHotspotClick }) {
             }}
         />
 
-        {/* Main Earth model */}
-        <primitive
-            ref={earthRef}
-            object={gltf.scene}
-            scale={1}
-            position={[0, 0, 0]}
-        />
+        {/* Earth model: either detailed 3D model for present or textured sphere for other eras */}
+        {useDetailedModel ? (
+          // Detailed 3D Earth model for present era
+          <primitive
+              ref={earthRef}
+              object={gltf.scene}
+              scale={1}
+              position={[0, 0, 0]}
+          />
+        ) : (
+          // Textured sphere for historical/future eras
+          <mesh ref={earthRef} scale={1} position={[0, 0, 0]}>
+            <sphereGeometry args={[1, 64, 64]} />
+            <meshStandardMaterial
+              map={eraTexture}
+              metalness={0.1}
+              roughness={0.7}
+            />
+          </mesh>
+        )}
 
         {/* Cloud layer - only render if texture loaded successfully */}
         {cloudsTextureLoaded && (
@@ -272,7 +309,7 @@ export default function Earth({ timeframe, onHotspotClick }) {
         </mesh>
 
         {/* Inner atmosphere for better glow */}
-        <mesh scale={1.05}>
+        <mesh scale={1.1}>
           <sphereGeometry args={[1, 64, 64]} />
           <meshPhongMaterial
               color="#FFFFFF"
