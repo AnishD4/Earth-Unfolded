@@ -1,7 +1,7 @@
 "use client";
 
 import dynamic from 'next/dynamic';
-import { useState, useEffect, Suspense } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { motion, AnimatePresence } from 'framer-motion';
 import TimelineControl from '@/components/TimelineControl';
@@ -11,13 +11,75 @@ import Link from 'next/link';
 
 // Dynamically import Earth component to avoid SSR issues with Three.js
 const Earth = dynamic(() => import('@/components/Earth'), { ssr: false });
-
+const timelineFacts = {
+  prehistoric: {
+    year: 'Prehistoric',
+    facts: [
+      'Global temperatures were much warmer than today.',
+      'CO₂ levels exceeded 1000 ppm, driving a greenhouse climate.',
+      'No polar ice caps existed; sea levels were significantly higher.'
+    ]
+  },
+  ice_age: {
+    year: 'Ice Age',
+    facts: [
+      'Average global temperatures were up to 6°C colder than today.',
+      'Massive ice sheets covered large parts of North America and Eurasia.',
+      'CO₂ levels dropped to around 180 ppm, the lowest in millions of years.'
+    ]
+  },
+  preindustrial: {
+    year: 'Pre-Industrial',
+    facts: [
+      'Climate was relatively stable for thousands of years.',
+      'CO₂ levels hovered around 280 ppm.',
+      'Small natural fluctuations in temperature occurred due to volcanic activity and solar cycles.'
+    ]
+  },
+  industrial: {
+    year: 'Industrial',
+    facts: [
+      'CO₂ levels began rising rapidly due to fossil fuel burning.',
+      'Global average temperature increased by about 1°C since 1850.',
+      'Industrial activities led to increased greenhouse gas emissions.'
+    ]
+  },
+  modern: {
+    year: 'Modern (1950–2025)',
+    facts: [
+      'Rapid increase in greenhouse gas emissions due to industrialization and population growth.',
+      'CO₂ levels rose from about 310 ppm in 1950 to over 420 ppm by 2025.',
+      'Global average temperature increased by about 0.8°C during this period.',
+      'Widespread recognition of climate change and international efforts to address it began.'
+    ]
+  },
+  present: {
+    year: 'Present',
+    facts: [
+      'CO₂ levels are above 420 ppm, the highest in at least 800,000 years.',
+      'Earth has warmed by over 1.1°C since pre-industrial times.',
+      'Extreme weather events and sea level rise are accelerating due to climate change.'
+    ]
+  },
+  future: {
+    year: 'Future (2100)',
+    facts: [
+      'Global temperatures could rise by 2–4°C or more, depending on emissions.',
+      'CO₂ levels may exceed 600 ppm if emissions are not curbed.',
+      'Sea levels could rise by up to 1 meter, threatening coastal cities.',
+      'Extreme weather events are projected to become even more frequent and severe.'
+    ]
+  }
+};
 export default function Home() {
-  const [activeTimeframe, setActiveTimeframe] = useState(null);
+  const [activeTimeframe, setActiveTimeframe] = useState({ id: 'present' /* ... */ });
   const [showInfoPanel, setShowInfoPanel] = useState(false);
   const [showIntro, setShowIntro] = useState(true);
   const [isLoaded, setIsLoaded] = useState(false);
   const [showHelp, setShowHelp] = useState(false);
+  const [selectedFact, setSelectedFact] = useState(0);
+  const currentFact = timelineFacts[activeTimeframe?.id] || timelineFacts['present'];
+
 
   // Start with intro animation
   useEffect(() => {
@@ -167,6 +229,21 @@ export default function Home() {
           </motion.div>
         )}
       </AnimatePresence>
+      <div className="absolute left-0 right-0 top-32 z-20 flex justify-center">
+      <div className="absolute left-25 top-10 z-20 flex justify-start">
+        <aside style={{ border: '1px solid #2d3748', background: '#18181b', padding: '1rem', width: '320px', borderRadius: '12px', marginTop: '1rem' }}>
+          <h2 className=" text-white text-lg font-semibold mb-2 text-center">Facts</h2>
+          <div className="text-blue-200">
+            <ul className="list-disc list-inside mt-2">
+              {currentFact.facts.map((fact, idx) => (
+                  <li key={idx}>{fact}</li>
+              ))}
+            </ul>
+          </div>
+        </aside>
+      </div>
+    </div>
+
 
       {/* 3D Canvas */}
       <Canvas
@@ -276,7 +353,8 @@ export default function Home() {
       </AnimatePresence>
 
       {/* Timeline Control */}
-      <TimelineControl onTimeframeChange={handleTimeframeChange} />
+      <TimelineControl onTimeframeChange={setActiveTimeframe} />
+
 
       {/* Info Panel removed as requested */}
     </div>
