@@ -21,19 +21,21 @@ const timelineFacts = {
     ]
   },
   ice_age: {
-    year: 'Ice Age',
+    year: 'Last Glacial Maximum (~20,000 years ago)',
     facts: [
-      'Average global temperatures were up to 6°C colder than today.',
-      'Massive ice sheets covered large parts of North America and Eurasia.',
-      'CO₂ levels dropped to around 180 ppm, the lowest in millions of years.'
+      'Global average temperature was about 6°C colder than today.',
+      'Massive ice sheets covered much of North America, Northern Europe, and Asia.',
+      'Sea levels were about 120 meters (394 feet) lower than today.',
+      'Atmospheric CO₂ was around 180–190 ppm.'
     ]
   },
   preindustrial: {
-    year: 'Pre-Industrial',
+    year: 'Pre-Industrial (circa 1850)',
     facts: [
-      'Climate was relatively stable for thousands of years.',
-      'CO₂ levels hovered around 280 ppm.',
-      'Small natural fluctuations in temperature occurred due to volcanic activity and solar cycles.'
+      'Global climate was relatively stable for thousands of years.',
+      'Atmospheric CO₂ was about 280 ppm.',
+      'Global average temperature was about 1.1°C lower than today.',
+      'Human influence on climate was minimal before widespread fossil fuel use.'
     ]
   },
   industrial: {
@@ -56,8 +58,9 @@ const timelineFacts = {
   present: {
     year: 'Present',
     facts: [
-      'CO₂ levels are above 420 ppm, the highest in at least 800,000 years.',
-      'Earth has warmed by over 1.1°C since pre-industrial times.',
+      'Atmospheric CO₂ is above 420 ppm, the highest in at least 2 million years.',
+      'Earth has warmed by about 1.1°C since pre-industrial times.',
+      '2023 was the warmest year on record globally.',
       'Extreme weather events and sea level rise are accelerating due to climate change.'
     ]
   },
@@ -81,6 +84,7 @@ export default function Home() {
   const currentFact = timelineFacts[activeTimeframe?.id] || timelineFacts['present'];
 
 
+  // Start with intro animation
   // Start with intro animation
   useEffect(() => {
     // Hide intro after delay
@@ -117,6 +121,7 @@ export default function Home() {
 
   const handleTimeframeChange = (timeframe) => {
     setActiveTimeframe(timeframe);
+
     // Close info panel when changing timeframes
     setShowInfoPanel(false);
   };
@@ -229,19 +234,19 @@ export default function Home() {
           </motion.div>
         )}
       </AnimatePresence>
-      <div className="absolute left-0 right-0 top-32 z-20 flex justify-center">
-      <div className="absolute left-25 top-10 z-20 flex justify-start">
-        <aside style={{ border: '1px solid #2d3748', background: '#18181b', padding: '1rem', width: '320px', borderRadius: '12px', marginTop: '1rem' }}>
-          <h2 className=" text-white text-lg font-semibold mb-2 text-center">Facts</h2>
-          <div className="text-blue-200">
-            <ul className="list-disc list-inside mt-2">
-              {currentFact.facts.map((fact, idx) => (
-                  <li key={idx}>{fact}</li>
-              ))}
-            </ul>
-          </div>
+      <div className="absolute left-25 top-32 z-20 flex ">
+        <aside className="border border-gray-800 bg-black/40 p-4 w-80 rounded-xl mt-4 backdrop-blur-sm">
+          <h2 className="text-white text-lg font-semibold mb-2 text-center">Facts</h2>
+            <div className="text-blue-200">
+              <ul className="list-disc list-inside mt-2">
+                {currentFact.facts.map((fact, idx) => (
+                    <li key={idx}>{fact}</li>
+                ))}
+              </ul>
+            </div>
         </aside>
       </div>
+      <div className="absolute left-0 right-0 top-32 z-20 flex justify-start">
     </div>
 
 

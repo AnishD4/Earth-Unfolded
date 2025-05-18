@@ -12,7 +12,7 @@ const timeframes = [
     color: '#FF5733'
   },
   {
-    id: 'ice-age',
+    id: 'ice_age',
     name: 'Ice Ages',
     year: '~2.5 million years ago',
     temp: '~6°C cooler than today',
@@ -21,7 +21,7 @@ const timeframes = [
     color: '#A5F2F3'
   },
   {
-    id: 'pre-industrial',
+    id: 'preindustrial',
     name: 'Pre-Industrial',
     year: '~1750',
     temp: '~13.7°C global average',
