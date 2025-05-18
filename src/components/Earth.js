@@ -77,7 +77,7 @@ export default function Earth({ timeframe, onHotspotClick }) {
     // Only auto-rotate when user isn't interacting
     if (earthRef.current && !controlsRef.current?.isDragging) {
       // Very slow rotation for subtle effect
-      earthRef.current.rotation.y += 0.0002;
+      earthRef.current.rotation.y += 0.003;
     }
 
     // Add subtle wobble to simulate Earth's actual movement
