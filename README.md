@@ -1,36 +1,122 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Earth Unfolded: A Journey Through Climate History
 
-## Getting Started
+<p align="center">
+  <em>Visualizing Earth's climate journey through time—past, present, and possible futures.</em>
+</p>
 
-First, run the development server:
+## 🌍 About
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+Earth Unfolded provides an interactive 3D visualization of our planet across different time periods, from prehistoric times to projected future scenarios. This educational tool makes climate change tangible and visually striking, helping users understand Earth's climate journey through an immersive experience.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## ✨ Features
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+- **Interactive Timeline**: Navigate through seven distinct climate eras
+- **3D Earth Visualization**: Observe how Earth's appearance changes across different periods with dynamic atmospheric effects
+- **Climate Data Dashboard**: Explore temperature and CO₂ levels with intuitive charts 
+- **Era-Specific Information**: Learn about climate impacts and solutions for each time period
+- **How Can You Help**: Discover actions aligned with UN Sustainable Development Goals to combat climate change
+- **Responsive Design**: Experience the application on any device
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🛠️ Built With
 
-## Learn More
+- **Frontend Framework**: [Next.js 15](https://nextjs.org/)
+- **JavaScript Library**: [React 18](https://reactjs.org/)
+- **3D Rendering**: [Three.js](https://threejs.org/), [React Three Fiber](https://github.com/pmndrs/react-three-fiber), [React Three Drei](https://github.com/pmndrs/drei)
+- **Animation**: [GSAP](https://greensock.com/gsap/), [Framer Motion](https://www.framer.com/motion/)
+- **Styling**: [TailwindCSS](https://tailwindcss.com/)
+- **Data Visualization**: [D3.js](https://d3js.org/)
+- **State Management**: [Zustand](https://github.com/pmndrs/zustand)
 
-To learn more about Next.js, take a look at the following resources:
+## 🚀 Getting Started
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Prerequisites
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- Node.js (version 18 or higher)
+- npm or yarn
 
-## Deploy on Vercel
+### Installation
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+1. Clone the repository
+   ```bash
+   git clone https://github.com/AnishD4/Earth-Unfolded.git
+   cd Earth-Unfolded
+   ```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+2. Install dependencies
+   ```bash
+   npm install
+   # or
+   yarn install
+   ```
+
+3. Run the development server
+   ```bash
+   npm run dev
+   # or
+   yarn dev
+   ```
+
+4. Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+
+### Building for Production
+
+1. Create a production build
+   ```bash
+   npm run build
+   # or
+   yarn build
+   ```
+
+2. Start the production server
+   ```bash
+   npm run start
+   # or
+   yarn start
+   ```
+
+## 📚 Project Background
+
+### Inspiration
+
+Traditional climate data can often feel abstract and disconnected from our daily lives. We wanted to create an interactive experience that allows users to literally see how our planet has changed over time. The UN Sustainable Development Goals, particularly SDG 13 (Climate Action), were a significant motivator for this project.
+
+### Challenges
+
+Building Earth Unfolded presented several technical challenges:
+
+- **Performance optimization** for 3D rendering
+- Creating intuitive **data visualizations** for complex climate information
+- Designing smooth **transitions between time periods**
+- Ensuring **mobile responsiveness** for a 3D-heavy application
+- Balancing **visual appeal with scientific accuracy**
+
+## 🌱 What's Next for Earth Unfolded
+
+We plan to expand the project with:
+
+- Enhanced data visualization with more detailed climate metrics
+- AR/VR integration for even more immersive climate exploration
+- Personalized carbon footprint calculator
+- Educational curriculum resources for teachers and students
+- API integration with real-time climate data sources
+- Multi-language support
+
+## 📝 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 👥 Contributors
+
+- Anish Dhore - [GitHub](https://github.com/AnishD4)
+- Sayuon Biju - [GitHub](https://github.com/ByjuBeta)
+- Srikar Anumolu - [GitHub](https://github.com/srikaranumolu)
+
+## 🙏 Acknowledgments
+
+- Climate data sourced from [NASA](https://climate.nasa.gov/)
+
+---
+
+<p align="center">
+  Made with 💙 for our planet
+</p>
