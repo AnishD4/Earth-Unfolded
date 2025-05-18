@@ -1195,7 +1195,7 @@ export default function ImpactPage() {
       <div className="relative mt-20 bg-black/50 backdrop-blur-sm text-white/60 py-4 text-center text-xs">
         <div className="container mx-auto px-4">
           <p className="mb-2">Earth Unfolded | Climate data sourced from IPCC, NASA, and NOAA</p>
-          <p>© 2023 Earth Unfolded | Educational platform for climate change awareness</p>
+          <p>© 2025 Earth Unfolded | Educational platform for climate change awareness</p>
         </div>
       </div>
     </div>
